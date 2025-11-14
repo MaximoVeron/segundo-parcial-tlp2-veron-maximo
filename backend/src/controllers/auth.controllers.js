@@ -62,5 +62,5 @@ export const profile = (req, res) => {
 
 export const logout = (req, res) => {
   res.clearCookie("token", { httpOnly: true });
-  return res.json({ message: "Logout exitoso" });
+  return res.json({ message: "Logout exitoso", ok: true });
 };

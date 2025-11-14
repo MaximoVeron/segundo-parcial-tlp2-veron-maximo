@@ -21,7 +21,7 @@ export const LoginPage = () => {
       });
       const data = await resp.json();
       if (data.ok) {
-        alert("usuario registrado exitosamente");
+        alert("usuario logueado exitosamente");
         handleReset();
         navigate("/home");
       }

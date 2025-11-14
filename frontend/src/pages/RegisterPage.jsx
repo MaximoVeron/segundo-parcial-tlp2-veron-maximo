@@ -16,7 +16,7 @@ export const RegisterPage = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formState),
+        body: JSON.stringify(null),
       });
       const data = await resp.json();
       if (data.ok) {

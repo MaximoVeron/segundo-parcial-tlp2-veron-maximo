@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { useEffect } from "react";
+import { useNavigate } from "react-router";
 
 export const Navbar = () => {
   // TODO: Obtener datos del usuario desde /api/profile
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
   useEffect(() => {
     const getProfile = async () => {
       setLoading(true);
@@ -27,6 +29,21 @@ export const Navbar = () => {
 
   // TODO: Implementar función handleLogout con POST a /api/logout usando credentials: 'include' / Después del logout exitoso, redireccionar a /login
 
+  const handleLogOut = async () => {
+    setLoading(true);
+    try {
+      await fetch("http://localhost:3000/api/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+      navigate("/login");
+    } catch (error) {
+      setError(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const userName = !error ? profile : null; // TODO: Reemplazar con el nombre real del usuario obtenido de /api/profile
   if (loading) return <h1>cargando la pagina...</h1>;
   return (
@@ -43,6 +60,7 @@ export const Navbar = () => {
           <button
             onClick={() => {
               // TODO: Implementar handleLogout aquí
+              handleLogOut();
             }}
             className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded transition-colors font-medium"
           >
