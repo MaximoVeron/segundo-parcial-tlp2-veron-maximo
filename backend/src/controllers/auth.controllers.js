@@ -51,6 +51,7 @@ export const register = async (req, res) => {
 
 export const profile = (req, res) => {
   return res.json({
+    ok: true,
     user: {
       id: req.user.id,
       name: req.user.name,

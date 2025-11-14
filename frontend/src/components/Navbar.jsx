@@ -8,22 +8,27 @@ export const Navbar = () => {
   const [error, setError] = useState(null);
   useEffect(() => {
     const getProfile = async () => {
-      const resp = await fetch("http://localhost:3000/api/profile", {
-        credentials: "include",
-      });
-      const profile = await resp.json();
-      console.log("👉🏻 ~ ProfileCard.jsx:9 ~ fetchProfile ~ profile:", profile);
-      setProfile(profile);
+      setLoading(true);
+      try {
+        const resp = await fetch("http://localhost:3000/api/profile", {
+          credentials: "include",
+        });
+        const profile = await resp.json();
+
+        if (profile.ok) setProfile(profile.user.name);
+      } catch (error) {
+        setError(error);
+      } finally {
+        setLoading(false);
+      }
     };
-    fetchProfile();
+    getProfile();
   }, []);
 
-  // TODO: Implementar función handleLogout con POST a /api/logout usando credentials: 'include'
-  // TODO: Después del logout exitoso, redireccionar a /login
-  // TODO: Manejar errores apropiadamente
+  // TODO: Implementar función handleLogout con POST a /api/logout usando credentials: 'include' / Después del logout exitoso, redireccionar a /login
 
-  const userName = "Usuario"; // TODO: Reemplazar con el nombre real del usuario obtenido de /api/profile
-
+  const userName = !error ? profile : null; // TODO: Reemplazar con el nombre real del usuario obtenido de /api/profile
+  if (loading) return <h1>cargando la pagina...</h1>;
   return (
     <nav className="bg-gray-900 text-white h-16 left-0 right-0 shadow-lg sticky top-0 z-50">
       <div className="container mx-auto px-4 h-full flex items-center justify-between">

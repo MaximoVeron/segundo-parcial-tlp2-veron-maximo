@@ -101,6 +101,7 @@ export const LoginPage = () => {
 
           <button
             type="submit"
+            disabled={Loading === true}
             className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded transition-colors"
           >
             Ingresar
