@@ -1,5 +1,23 @@
+import { useState } from "react";
+import { useEffect } from "react";
+
 export const Navbar = () => {
   // TODO: Obtener datos del usuario desde /api/profile
+  const [profile, setProfile] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  useEffect(() => {
+    const getProfile = async () => {
+      const resp = await fetch("http://localhost:3000/api/profile", {
+        credentials: "include",
+      });
+      const profile = await resp.json();
+      console.log("👉🏻 ~ ProfileCard.jsx:9 ~ fetchProfile ~ profile:", profile);
+      setProfile(profile);
+    };
+    fetchProfile();
+  }, []);
+
   // TODO: Implementar función handleLogout con POST a /api/logout usando credentials: 'include'
   // TODO: Después del logout exitoso, redireccionar a /login
   // TODO: Manejar errores apropiadamente
