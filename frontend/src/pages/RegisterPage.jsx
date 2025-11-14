@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router";
 import { useForm } from "../hooks/useForm";
 import { useState } from "react";
+import { LoadingComponent } from "../components/LoadingComponent";
 
 export const RegisterPage = () => {
   // TODO: Integrar lógica de registro aquí
@@ -45,7 +46,7 @@ export const RegisterPage = () => {
     register();
   };
 
-  if (loading) return <h1>Enviando Formulario</h1>;
+  if (loading) return <LoadingComponent />;
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4 py-8">

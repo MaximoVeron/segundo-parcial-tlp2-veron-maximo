@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router";
-import { Loading } from "../components/Loading";
+import { LoadingComponent } from "../components/LoadingComponent";
 
 export const PublicRoute = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -28,7 +28,7 @@ export const PublicRoute = () => {
   }, []);
 
   if (isAuthenticated === null) {
-    return <Loading />;
+    return <LoadingComponent />;
   }
 
   if (isAuthenticated) {

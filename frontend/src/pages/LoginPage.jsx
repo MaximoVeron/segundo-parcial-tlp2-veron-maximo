@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { useForm } from "../hooks/useForm";
+import { LoadingComponent } from "../components/LoadingComponent";
 
 export const LoginPage = () => {
-  const [loading, setLoading] = useState(null);
+  const [Loading, setLoading] = useState(null);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   // TODO: Integrar lógica de autenticación aquí
@@ -19,6 +20,11 @@ export const LoginPage = () => {
         credentials: "include",
       });
       const data = await resp.json();
+      if (data.ok) {
+        alert("usuario registrado exitosamente");
+        handleReset();
+        navigate("/home");
+      }
     } catch (error) {
       setError(error);
     } finally {
@@ -34,7 +40,9 @@ export const LoginPage = () => {
   // TODO: Implementar función handleSubmit
   const handleSubmit = (e) => {
     e.preventDefault();
+    login();
   };
+  if (Loading) return <LoadingComponent />;
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4 py-8">
       <div className="max-w-md w-full bg-white rounded-lg shadow-xl p-8">
