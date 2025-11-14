@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router";
-import Loading from "../components/Loading";
+import { LoadingComponent } from "../components/LoadingComponent";
 
 export const PublicRoute = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const checkAuth = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/profile", {
+      const response = await fetch("http://localhost:3005/api/profile", {
         method: "GET",
         credentials: "include",
       });
@@ -28,7 +28,7 @@ export const PublicRoute = () => {
   }, []);
 
   if (isAuthenticated === null) {
-    return <Loading />;
+    return <LoadingComponent />;
   }
 
   if (isAuthenticated) {

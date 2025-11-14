@@ -1,9 +1,52 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { useForm } from "../hooks/useForm";
+import { useState } from "react";
+import { LoadingComponent } from "../components/LoadingComponent";
 
 export const RegisterPage = () => {
   // TODO: Integrar lógica de registro aquí
+  const [loading, setLoading] = useState(null);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+  const register = async () => {
+    setLoading(true);
+    try {
+      const resp = await fetch("http://localhost:3005/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(),
+      });
+      const data = await resp.json();
+      if (data.ok) {
+        alert("registro exitoso");
+        handleReset();
+        navigate("/login");
+      }
+    } catch (error) {
+      setError(error);
+    } finally {
+      setLoading(false);
+    }
+  };
   // TODO: Implementar useForm para el manejo del formulario
+  const { formState, handleChange, handleReset } = useForm({
+    username: "",
+    email: "",
+    password: "",
+    name: "",
+    lastname: "",
+  });
+  const { username, email, password, name, lastname } = formState;
   // TODO: Implementar función handleSubmit
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setError(null);
+    register();
+  };
+
+  if (loading) return <LoadingComponent />;
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4 py-8">
@@ -13,13 +56,15 @@ export const RegisterPage = () => {
         </h2>
 
         {/* TODO: Mostrar este div cuando haya error */}
-        <div className="hidden bg-red-100 text-red-700 p-3 rounded mb-4">
-          <p className="text-sm">
-            Error al crear la cuenta. Intenta nuevamente.
-          </p>
-        </div>
+        {error ? (
+          <div className="hidden bg-red-100 text-red-700 p-3 rounded mb-4">
+            <p className="text-sm">
+              Error al crear la cuenta. Intenta nuevamente.
+            </p>
+          </div>
+        ) : null}
 
-        <form onSubmit={(event) => {}}>
+        <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label
               htmlFor="username"
@@ -34,6 +79,8 @@ export const RegisterPage = () => {
               placeholder="Elige un nombre de usuario"
               className="w-full border border-gray-300 rounded p-3 focus:outline-none focus:ring-2 focus:ring-green-500"
               required
+              onChange={handleChange}
+              value={username}
             />
           </div>
 
@@ -51,6 +98,8 @@ export const RegisterPage = () => {
               placeholder="tu@email.com"
               className="w-full border border-gray-300 rounded p-3 focus:outline-none focus:ring-2 focus:ring-green-500"
               required
+              onChange={handleChange}
+              value={email}
             />
           </div>
 
@@ -68,6 +117,8 @@ export const RegisterPage = () => {
               placeholder="Crea una contraseña segura"
               className="w-full border border-gray-300 rounded p-3 focus:outline-none focus:ring-2 focus:ring-green-500"
               required
+              onChange={handleChange}
+              value={password}
             />
           </div>
 
@@ -85,6 +136,8 @@ export const RegisterPage = () => {
               placeholder="Tu nombre"
               className="w-full border border-gray-300 rounded p-3 focus:outline-none focus:ring-2 focus:ring-green-500"
               required
+              onChange={handleChange}
+              value={name}
             />
           </div>
 
@@ -102,6 +155,8 @@ export const RegisterPage = () => {
               placeholder="Tu apellido"
               className="w-full border border-gray-300 rounded p-3 focus:outline-none focus:ring-2 focus:ring-green-500"
               required
+              onChange={handleChange}
+              value={lastname}
             />
           </div>
 

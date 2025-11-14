@@ -1,48 +1,42 @@
+import { useEffect, useState } from "react";
+import { LoadingComponent } from "../components/LoadingComponent";
+
+// import { useNavigate } from "react-router";
+
 export const HomePage = () => {
+  // const navigate = useNavigate();
   // TODO: Integrar lógica para obtener superhéroes desde la API
+  const [heroes, setHeroes] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [load, setLoad] = useState(0);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const resp = await fetch("http://localhost:3005/api/superheroes", {
+          credentials: "include",
+        });
+        const data = await resp.json();
+        setHeroes(data);
+      } catch (error) {
+        setError(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [load]);
+
   // TODO: Implementar useState para almacenar la lista de superhéroes
+  // esto se implemento en la linea 8 del codigo por preferencias visuales
   // TODO: Implementar función para recargar superhéroes
-
-  // Datos de ejemplo para las cards
-  const superheroes = [
-    {
-      id: 1,
-      superhero: "Superman",
-      image:
-        "https://cdn.jsdelivr.net/gh/akabab/superhero-api@0.3.0/api/images/lg/644-superman.jpg",
-    },
-    {
-      id: 2,
-      superhero: "Batman",
-      image:
-        "https://cdn.jsdelivr.net/gh/akabab/superhero-api@0.3.0/api/images/lg/70-batman.jpg",
-    },
-    {
-      id: 3,
-      superhero: "Wonder Woman",
-      image:
-        "https://cdn.jsdelivr.net/gh/akabab/superhero-api@0.3.0/api/images/lg/720-wonder-woman.jpg",
-    },
-    {
-      id: 4,
-      superhero: "Spider-Man",
-      image:
-        "https://cdn.jsdelivr.net/gh/akabab/superhero-api@0.3.0/api/images/lg/620-spider-man.jpg",
-    },
-    {
-      id: 5,
-      superhero: "Iron Man",
-      image:
-        "https://cdn.jsdelivr.net/gh/akabab/superhero-api@0.3.0/api/images/lg/346-iron-man.jpg",
-    },
-    {
-      id: 6,
-      superhero: "Captain America",
-      image:
-        "https://cdn.jsdelivr.net/gh/akabab/superhero-api@0.3.0/api/images/lg/149-captain-america.jpg",
-    },
-  ];
-
+  const handleReload = () => {
+    setLoad((c) => c + 1);
+  };
+  if (loading) return <LoadingComponent />;
+  if (!heroes) return <h1>Cargando heroes...</h1>;
   return (
     <div className="container mx-auto px-4 pb-8">
       <h1 className="text-4xl font-bold text-center mt-8 mb-4 text-gray-800">
@@ -51,17 +45,21 @@ export const HomePage = () => {
 
       <div className="flex justify-center mb-8">
         <button
-          onClick={() => {
-            // TODO: Implementar función para recargar superhéroes
-          }}
+          type="button"
+          onClick={handleReload}
           className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded transition-colors"
         >
           Recargar
         </button>
       </div>
+      {error ? (
+        <div className="hidden bg-red-100 text-red-700 p-3 rounded mb-4">
+          <p className="text-sm">Error al traer los personajes.</p>
+        </div>
+      ) : null}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {superheroes.map((hero) => (
+        {heroes.data.map((hero) => (
           <div
             key={hero.id}
             className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer"

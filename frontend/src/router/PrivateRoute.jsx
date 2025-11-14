@@ -2,13 +2,14 @@ import { useState, useEffect } from "react";
 import { Navigate, Outlet } from "react-router";
 import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
+import { LoadingComponent } from "../components/LoadingComponent";
 
 export const PrivateRoute = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
 
   const checkAuth = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/profile", {
+      const response = await fetch("http://localhost:3005/api/profile", {
         method: "GET",
         credentials: "include",
       });
@@ -29,7 +30,7 @@ export const PrivateRoute = () => {
   }, []);
 
   if (isAuthenticated === null) {
-    return <Loading />;
+    return <LoadingComponent />;
   }
 
   if (!isAuthenticated) {
