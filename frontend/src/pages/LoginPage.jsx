@@ -11,7 +11,7 @@ export const LoginPage = () => {
   const login = async () => {
     setLoading(true);
     try {
-      const resp = await fetch("http://localhost:3000/api/login", {
+      const resp = await fetch("http://localhost:3005/api/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

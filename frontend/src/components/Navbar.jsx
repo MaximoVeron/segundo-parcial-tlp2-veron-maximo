@@ -12,7 +12,7 @@ export const Navbar = () => {
     const getProfile = async () => {
       setLoading(true);
       try {
-        const resp = await fetch("http://localhost:3000/api/profile", {
+        const resp = await fetch("http://localhost:3005/api/profile", {
           credentials: "include",
         });
         const profile = await resp.json();
@@ -32,7 +32,7 @@ export const Navbar = () => {
   const handleLogOut = async () => {
     setLoading(true);
     try {
-      await fetch("http://localhost:3000/api/logout", {
+      await fetch("http://localhost:3005/api/logout", {
         method: "POST",
         credentials: "include",
       });

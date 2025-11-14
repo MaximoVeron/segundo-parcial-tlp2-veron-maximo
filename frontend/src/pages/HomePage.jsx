@@ -15,7 +15,7 @@ export const HomePage = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const resp = await fetch("http://localhost:3000/api/superheroes", {
+        const resp = await fetch("http://localhost:3005/api/superheroes", {
           credentials: "include",
         });
         const data = await resp.json();
