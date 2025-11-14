@@ -9,6 +9,7 @@ export const HomePage = () => {
   const [heroes, setHeroes] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [load, setLoad] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,11 +27,14 @@ export const HomePage = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [load]);
 
   // TODO: Implementar useState para almacenar la lista de superhéroes
   // esto se implemento en la linea 8 del codigo por preferencias visuales
   // TODO: Implementar función para recargar superhéroes
+  const handleReload = () => {
+    setLoad((c) => c + 1);
+  };
   if (loading) return <LoadingComponent />;
   if (!heroes) return <h1>Cargando heroes...</h1>;
   return (
@@ -42,6 +46,7 @@ export const HomePage = () => {
       <div className="flex justify-center mb-8">
         <button
           type="button"
+          onClick={handleReload}
           className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded transition-colors"
         >
           Recargar
