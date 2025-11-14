@@ -3,8 +3,8 @@ import { useState } from "react";
 export const useForm = (initialState = {}) => {
   const [formState, setFormState] = useState(initialState);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+  const handleChange = ({ target }) => {
+    const { name, value } = target;
     setFormState({
       ...formState,
       [name]: value,
@@ -17,7 +17,6 @@ export const useForm = (initialState = {}) => {
 
   return {
     formState,
-    ...formState,
     handleChange,
     handleReset,
   };
